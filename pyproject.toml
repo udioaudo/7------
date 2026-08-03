@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sector-trend-report"
+version = "0.1.0"
+description = "同花顺行业板块趋势早报"
+requires-python = ">=3.11"
+dependencies = [
+  "akshare==1.18.64",
+  "pandas>=3.0,<3.1",
+  "PyYAML>=6.0,<7",
+  "matplotlib>=3.9,<4",
+  "Jinja2>=3.1,<4",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

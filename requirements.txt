@@ -1,0 +1,5 @@
+akshare==1.18.64
+pandas>=3.0,<3.1
+PyYAML>=6.0,<7
+matplotlib>=3.9,<4
+Jinja2>=3.1,<4

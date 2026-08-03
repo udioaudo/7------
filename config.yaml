@@ -1,0 +1,48 @@
+app:
+  timezone: Asia/Shanghai
+  database: data/sector_report.db
+  output_dir: output
+  history_days: 90
+  request_interval_seconds: 0.8
+  request_retries: 3
+  max_late_minutes: 90
+
+email:
+  sender: tfy1317262462@126.com
+  recipient: tfy1317262462@126.com
+  smtp_host: smtp.126.com
+  smtp_port: 465
+  auth_env: SMTP_AUTH_CODE
+  subject_prefix: "板块趋势早报"
+
+signals:
+  broad_strength_threshold: 0.60
+  leader_only_threshold: 0.40
+  strong_rank_quantile: 0.25
+
+sector_groups:
+  消费:
+    - 白酒
+    - 食品加工制造
+  科技:
+    - 半导体
+    - 软件开发
+    - IT服务
+    - 计算机设备
+    - 通信设备
+    - 消费电子
+  医疗:
+    - 医疗器械
+    - 医疗服务
+    - 化学制药
+    - 生物制品
+    - 中药
+  光电新能源:
+    - 光学光电子
+    - 光伏设备
+    - 风电设备
+    - 电池
+  传统能源:
+    - 电力
+    - 煤炭开采加工
+    - 油气开采及服务
