@@ -129,7 +129,7 @@ def run_report(
             emailer.send_html(subject, email_html, {"heatmap": charts["heatmap"], "trends": charts["trends"]})
             sent_at = datetime.now(settings.tz)
             db.finish_run(run_id, sent_at, "sent", subject, preview_path, sent_at=sent_at)
-            LOGGER.info("报告已发送至 %s", settings.email.recipient)
+            LOGGER.info("报告已发送至 %s", ", ".join(settings.email.recipients))
             status = "sent"
         else:
             db.finish_run(run_id, completed_at, "generated", subject, preview_path)

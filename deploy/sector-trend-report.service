@@ -1,0 +1,22 @@
+[Unit]
+Description=同花顺行业板块趋势早报
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=sector-report
+Group=sector-report
+WorkingDirectory=/opt/sector-trend-report
+EnvironmentFile=/etc/sector-trend-report/sector-report.env
+Environment=PYTHONUNBUFFERED=1
+Environment=MPLCONFIGDIR=/var/lib/sector-trend-report/matplotlib
+ExecStart=/opt/sector-trend-report/.venv/bin/python -m sector_report --config /etc/sector-trend-report/config.yaml run --send
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/sector-trend-report
+
+[Install]
+WantedBy=multi-user.target

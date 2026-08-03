@@ -22,7 +22,7 @@ class AppSettings:
 @dataclass(frozen=True)
 class EmailSettings:
     sender: str
-    recipient: str
+    recipients: tuple[str, ...]
     smtp_host: str
     smtp_port: int
     auth_env: str
@@ -95,6 +95,19 @@ def load_settings(path: str | Path = "config.yaml") -> Settings:
     if not output_dir.is_absolute():
         output_dir = (base / output_dir).resolve()
 
+    if "recipients" in email_raw:
+        raw_recipients = email_raw["recipients"]
+        if not isinstance(raw_recipients, list):
+            raise ValueError("email.recipients 必须是非空列表")
+    else:
+        # 兼容旧版单收件人配置。
+        raw_recipients = [_required(email_raw, "recipient")]
+    recipients = tuple(dict.fromkeys(
+        str(recipient).strip() for recipient in raw_recipients if str(recipient).strip()
+    ))
+    if not recipients:
+        raise ValueError("email.recipients 必须包含至少一个收件邮箱")
+
     settings = Settings(
         app=AppSettings(
             timezone=str(app_raw.get("timezone", "Asia/Shanghai")),
@@ -107,7 +120,7 @@ def load_settings(path: str | Path = "config.yaml") -> Settings:
         ),
         email=EmailSettings(
             sender=str(_required(email_raw, "sender")),
-            recipient=str(_required(email_raw, "recipient")),
+            recipients=recipients,
             smtp_host=str(email_raw.get("smtp_host", "smtp.126.com")),
             smtp_port=int(email_raw.get("smtp_port", 465)),
             auth_env=str(email_raw.get("auth_env", "SMTP_AUTH_CODE")),

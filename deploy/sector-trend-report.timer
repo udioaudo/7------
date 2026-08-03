@@ -1,0 +1,11 @@
+[Unit]
+Description=北京时间工作日上午 11 点运行板块趋势早报
+
+[Timer]
+OnCalendar=Mon..Fri *-*-* 11:00:00 Asia/Shanghai
+Persistent=true
+AccuracySec=1min
+Unit=sector-trend-report.service
+
+[Install]
+WantedBy=timers.target

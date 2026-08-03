@@ -8,8 +8,10 @@ app:
   max_late_minutes: 90
 
 email:
-  sender: tfy1317262462@126.com
-  recipient: tfy1317262462@126.com
+  sender: zf2090@126.com
+  recipients:
+    - tfy1317262462@126.com
+    - zhangfei2333@gmail.com
   smtp_host: smtp.126.com
   smtp_port: 465
   auth_env: SMTP_AUTH_CODE

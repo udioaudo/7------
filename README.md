@@ -1,6 +1,6 @@
 # 同花顺板块趋势早报
 
-每天上午 11:00 获取同花顺行业板块盘中数据，生成带热力图、20 日趋势和规则化信号的 HTML 邮件。默认由 `tfy1317262462@126.com` 发给自己。
+每天上午 11:00 获取同花顺行业板块盘中数据，生成带热力图、20 日趋势和规则化信号的 HTML 邮件。正式环境由服务器通过 126 SMTP 发给配置中的多个收件人。
 
 ## 一、环境准备
 
@@ -77,7 +77,7 @@ powershell -ExecutionPolicy Bypass -File .\setup_task.ps1
 
 编辑 `config.yaml` 可以修改：
 
-- 收发邮箱和 SMTP 地址；
+- 发件邮箱、收件人列表和 SMTP 地址；
 - 数据库、输出目录和请求间隔；
 - 最大补发时间；
 - 信号阈值；
@@ -116,3 +116,17 @@ py -3 -m pytest
 3. 检查本地 HTML 与图片
 4. 设置授权码后执行一次 `run --send --force`
 5. 确认 126 邮箱收到正文图片完整的邮件
+
+## 九、Linux 服务器部署
+
+生产运行目录约定如下：
+
+- 程序：`/opt/sector-trend-report`
+- 配置：`/etc/sector-trend-report/config.yaml`
+- SMTP 环境变量：`/etc/sector-trend-report/sector-report.env`
+- 数据与输出：`/var/lib/sector-trend-report`
+
+仓库中的 `deploy/sector-trend-report.service` 和 `deploy/sector-trend-report.timer`
+用于 systemd 部署。定时器按北京时间周一至周五 11:00 触发，程序仍会检查 A 股交易日、
+90 分钟补发时限和同日重复发送记录。SMTP 授权码只能写入权限为 `0640` 的服务器环境文件，
+不得写入 `config.yaml` 或提交到 Git。

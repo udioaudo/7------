@@ -33,7 +33,11 @@ class EmailSender:
                     timeout=30,
                 ) as smtp:
                     smtp.login(self.settings.sender, password)
-                    smtp.send_message(message)
+                    smtp.send_message(
+                        message,
+                        from_addr=self.settings.sender,
+                        to_addrs=list(self.settings.recipients),
+                    )
                 return
             except Exception as exc:
                 last_error = exc
@@ -45,7 +49,7 @@ class EmailSender:
         message = EmailMessage()
         message["Subject"] = subject
         message["From"] = self.settings.sender
-        message["To"] = self.settings.recipient
+        message["To"] = ", ".join(self.settings.recipients)
         domain = self.settings.sender.split("@")[-1]
         message["Message-ID"] = make_msgid(domain=domain)
         message.set_content("本邮件包含 HTML 板块趋势报告，请使用支持 HTML 的邮件客户端查看。")
